@@ -4,6 +4,7 @@ namespace Shop.Models
 {
     public class Product
     {
+        [Key]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Este campo é obrigatorio")]
