@@ -15,6 +15,12 @@ public class CategoryController : ControllerBase
         return "Get";
     }
 
+    [HttpGet]
+    [Route("{id:int}")]  //chega no metodo com restrição de rota
+    public string GetById(int id)
+    {
+        return "Get" + id.ToString();
+    }
     [HttpPost]
     [Route("")]  //chega no metodo
     public string Post()
