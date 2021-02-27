@@ -8,9 +8,31 @@ using Microsoft.AspNetCore.Mvc;
 public class CategoryController : ControllerBase
 {
     //https://localhost:5001/categories
+    [HttpGet]
     [Route("")]  //chega no metodo
-    public string MeuMetodo()
+    public string Get()
     {
-        return "Ola mundo!";
+        return "Get";
+    }
+
+    [HttpPost]
+    [Route("")]  //chega no metodo
+    public string Post()
+    {
+        return "Post";
+    }
+
+    [HttpPut]
+    [Route("")]  //chega no metodo
+    public string Put()
+    {
+        return "Put";
+    }
+
+    [HttpDelete]
+    [Route("")]  //chega no metodo
+    public string Delete()
+    {
+        return "Delete";
     }
 }
