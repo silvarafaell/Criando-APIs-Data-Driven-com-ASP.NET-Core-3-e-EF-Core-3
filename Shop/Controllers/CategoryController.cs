@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Models;
 
@@ -11,38 +13,38 @@ public class CategoryController : ControllerBase
     //https://localhost:5001/categories
     [HttpGet]
     [Route("")]  //chega no metodo
-    public string Get()
+    public async Task<ActionResult<List<Category>>> Get()
     {
-        return "Get";
+        return new List<Category>();
     }
 
     [HttpGet]
     [Route("{id:int}")]  //chega no metodo com restrição de rota
-    public string GetById(int id)
+    public async Task<ActionResult<Category>> GetById(int id)
     {
-        return "Get" + id.ToString();
+        return new Category();
     }
     [HttpPost]
     [Route("")]  //chega no metodo
-    public Category Post([FromBody] Category model)
+    public async Task<ActionResult<List<Category>>> Post([FromBody] Category model)
     {
-        return model;
+        return Ok(model);
     }
 
     [HttpPut]
     [Route("{ind:int}")]  //chega no metodo
-    public Category Put(int id, [FromBody] Category model)
+    public async Task<ActionResult<List<Category>>> Put(int id, [FromBody] Category model)
     {
         if (model.Id == id)
-            return model;
+            return Ok(model);
 
-        return null;
+        return NotFound();
     }
 
     [HttpDelete]
     [Route("{ind:int}")]  //chega no metodo
-    public string Delete()
+    public async Task<ActionResult<List<Category>>> Delete()
     {
-        return "Delete";
+        return Ok();
     }
 }
