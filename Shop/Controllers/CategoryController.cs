@@ -27,19 +27,24 @@ public class CategoryController : ControllerBase
     }
     [HttpPost]
     [Route("")]  //chega no metodo
-    public async Task<ActionResult<List<Category>>> Post(
-        [FromBody] Category model,
-        [FromServices] DataContext context //Usando o DataContext
-    )
-
+    public async Task<ActionResult<List<Category>>> Post([FromBody] Category model, [FromServices] DataContext context) //Usando o DataContext
     {
-        // Verifica se os dados são válidos
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        try
+        {
+            // Verifica se os dados são válidos
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        context.Categories.Add(model); //Adicionando Categoria no Banco virtual
-        await context.SaveChangesAsync();
-        return Ok(model);
+            context.Categories.Add(model); //Adicionando Categoria no Banco virtual
+            await context.SaveChangesAsync();
+            return Ok(model);
+        }
+        catch
+        {
+            return BadRequest(new { message = "Não foi possivel criar a categoria" });
+        }
+
+
     }
 
     [HttpPut]
