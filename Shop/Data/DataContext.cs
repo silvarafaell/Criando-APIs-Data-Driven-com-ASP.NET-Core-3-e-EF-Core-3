@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shop.Models;
 
-namespace Backoffice.Data
+namespace Shop.Data
 {
     public class DataContext : DbContext //herda de DbContext
     {

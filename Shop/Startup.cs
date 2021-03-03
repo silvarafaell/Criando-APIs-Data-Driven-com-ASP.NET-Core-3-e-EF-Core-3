@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Shop.Data;
 
 namespace Shop
 {
@@ -19,6 +21,12 @@ namespace Shop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //Tudo pronto para os Controllers funcionarem
+            services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database")); //tipo de banco , informando a aplicao que temos DbContext
+            services.AddScoped<DataContext, DataContext>();
+            // colocando o dataContext disponivel
+            // AddScoped - vai garantir que tenha um DataContext por requisição, nunca vai ter duas requisição aberta
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
