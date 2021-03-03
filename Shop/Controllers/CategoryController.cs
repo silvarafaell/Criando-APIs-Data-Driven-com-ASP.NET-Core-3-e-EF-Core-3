@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Models;
 
@@ -43,23 +45,35 @@ public class CategoryController : ControllerBase
         {
             return BadRequest(new { message = "Não foi possivel criar a categoria" });
         }
-
-
     }
 
     [HttpPut]
     [Route("{ind:int}")]  //chega no metodo
-    public async Task<ActionResult<List<Category>>> Put(int id, [FromBody] Category model)
+    public async Task<ActionResult<List<Category>>> Put(int id, [FromBody] Category model, [FromServices] DataContext context)
     {
-        // Verifica se o ID informado é o mesmo do modelo
-        if (id != model.Id)
-            return NotFound(new { message = "Categoria não encontrada" });
+        try
+        {
+            // Verifica se o ID informado é o mesmo do modelo
+            if (id != model.Id)
+                return NotFound(new { message = "Categoria não encontrada" });
 
-        // Verifica se os dados são válidos
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+            // Verifica se os dados são válidos
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        return Ok(model);
+            context.Entry<Category>(model).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return Ok(model);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            return BadRequest(new { message = "Este registro já foi atualizado" });
+        }
+        catch (Exception)
+        {
+            return BadRequest(new { message = "Não foi possivel atualizar a categoria" });
+        }
+
     }
 
     [HttpDelete]
