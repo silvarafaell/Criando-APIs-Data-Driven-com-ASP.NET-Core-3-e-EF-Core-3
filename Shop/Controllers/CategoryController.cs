@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Data;
 using Shop.Models;
 
 //Endpoint => URL
@@ -26,12 +27,18 @@ public class CategoryController : ControllerBase
     }
     [HttpPost]
     [Route("")]  //chega no metodo
-    public async Task<ActionResult<List<Category>>> Post([FromBody] Category model)
+    public async Task<ActionResult<List<Category>>> Post(
+        [FromBody] Category model,
+        [FromServices] DataContext context //Usando o DataContext
+    )
+
     {
         // Verifica se os dados são válidos
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
+        context.Categories.Add(model); //Adicionando Categoria no Banco virtual
+        await context.SaveChangesAsync();
         return Ok(model);
     }
 
