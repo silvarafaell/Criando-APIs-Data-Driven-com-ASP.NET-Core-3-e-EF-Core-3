@@ -16,16 +16,19 @@ public class CategoryController : ControllerBase
     //https://localhost:5001/categories
     [HttpGet]
     [Route("")]  //chega no metodo
-    public async Task<ActionResult<List<Category>>> Get()
+    public async Task<ActionResult<List<Category>>> Get([FromServices] DataContext context)
     {
-        return new List<Category>();
+        //Busca todas as categorias
+        var categories = await context.Categories.AsNoTracking().ToListAsync();
+        return categories;
     }
 
     [HttpGet]
     [Route("{id:int}")]  //chega no metodo com restrição de rota
-    public async Task<ActionResult<Category>> GetById(int id)
+    public async Task<ActionResult<Category>> GetById(int id, [FromServices] DataContext context)
     {
-        return new Category();
+        var category = await context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+        return category;
     }
     [HttpPost]
     [Route("")]  //chega no metodo
