@@ -41,6 +41,25 @@ namespace Shop.Controllers
             .ToListAsync(); //ToList sempre no final
             return products;
         }
+
+        //Criar o Produto
+        [HttpPost]
+        [Route("")]
+        public async Task<ActionResult<Product>> Post(
+            [FromServices] DataContext context,
+            [FromBody] Product model)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Products.Add(model);
+                await context.SaveChangesAsync();
+                return Ok(model);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
     }
 
 }
