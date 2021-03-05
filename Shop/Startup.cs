@@ -23,7 +23,8 @@ namespace Shop
             services.AddControllers();
 
             //Tudo pronto para os Controllers funcionarem
-            services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database")); //tipo de banco , informando a aplicao que temos DbContext
+            //services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database")); //tipo de banco , informando a aplicao que temos DbContext
+            services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
             services.AddScoped<DataContext, DataContext>();
             // colocando o dataContext disponivel
             // AddScoped - vai garantir que tenha um DataContext por requisição, nunca vai ter duas requisição aberta
