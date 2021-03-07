@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shop.Data;
@@ -16,6 +17,7 @@ public class CategoryController : ControllerBase
     //https://localhost:5001/categories
     [HttpGet]
     [Route("")]  //chega no metodo
+    [AllowAnonymous]
     public async Task<ActionResult<List<Category>>> Get([FromServices] DataContext context)
     {
         //Busca todas as categorias
@@ -25,6 +27,7 @@ public class CategoryController : ControllerBase
 
     [HttpGet]
     [Route("{id:int}")]  //chega no metodo com restrição de rota
+    [AllowAnonymous]
     public async Task<ActionResult<Category>> GetById(int id, [FromServices] DataContext context)
     {
         var category = await context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
@@ -32,6 +35,7 @@ public class CategoryController : ControllerBase
     }
     [HttpPost]
     [Route("")]  //chega no metodo
+    [Authorize(Roles = "employee")]
     public async Task<ActionResult<List<Category>>> Post([FromBody] Category model, [FromServices] DataContext context) //Usando o DataContext
     {
         try
@@ -52,6 +56,7 @@ public class CategoryController : ControllerBase
 
     [HttpPut]
     [Route("{ind:int}")]  //chega no metodo
+    [Authorize(Roles = "employee")]
     public async Task<ActionResult<List<Category>>> Put(int id, [FromBody] Category model, [FromServices] DataContext context)
     {
         try
@@ -81,6 +86,7 @@ public class CategoryController : ControllerBase
 
     [HttpDelete]
     [Route("{ind:int}")]  //chega no metodo
+    [Authorize(Roles = "employee")]
     public async Task<ActionResult<List<Category>>> Delete(int id, [FromServices] DataContext context)
     {
         try
