@@ -11,13 +11,15 @@ using Shop.Models;
 //http://localhost:5000
 //https://localhost:5001
 //para chegar no controller tem que colocar a Route
-[Route("categories")] //chega no controller
+[Route("v1/categories")] //chega no controller
 public class CategoryController : ControllerBase
 {
     //https://localhost:5001/categories
     [HttpGet]
-    [Route("")]  //chega no metodo
+    [Route("")] //chega no metodo
     [AllowAnonymous]
+    [ResponseCache(VaryByHeader = "User-Agent", Location = ResponseCacheLocation.Any, Duration = 30)] //Duracao 30 minutos
+    // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)] quando não tem cache no metodo
     public async Task<ActionResult<List<Category>>> Get([FromServices] DataContext context)
     {
         //Busca todas as categorias
