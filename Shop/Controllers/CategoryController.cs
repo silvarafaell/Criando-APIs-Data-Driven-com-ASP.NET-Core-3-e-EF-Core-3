@@ -7,28 +7,22 @@ using Microsoft.EntityFrameworkCore;
 using Shop.Data;
 using Shop.Models;
 
-//Endpoint => URL
-//http://localhost:5000
-//https://localhost:5001
-//para chegar no controller tem que colocar a Route
-[Route("v1/categories")] //chega no controller
+[Route("v1/categories")] 
 public class CategoryController : ControllerBase
 {
-    //https://localhost:5001/categories
     [HttpGet]
-    [Route("")] //chega no metodo
+    [Route("")] 
     [AllowAnonymous]
     [ResponseCache(VaryByHeader = "User-Agent", Location = ResponseCacheLocation.Any, Duration = 30)] //Duracao 30 minutos
     // [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)] quando não tem cache no metodo
     public async Task<ActionResult<List<Category>>> Get([FromServices] DataContext context)
     {
-        //Busca todas as categorias
         var categories = await context.Categories.AsNoTracking().ToListAsync();
         return categories;
     }
 
     [HttpGet]
-    [Route("{id:int}")]  //chega no metodo com restrição de rota
+    [Route("{id:int}")]
     [AllowAnonymous]
     public async Task<ActionResult<Category>> GetById(int id, [FromServices] DataContext context)
     {
@@ -36,7 +30,7 @@ public class CategoryController : ControllerBase
         return category;
     }
     [HttpPost]
-    [Route("")]  //chega no metodo
+    [Route("")]
     [Authorize(Roles = "employee")]
     public async Task<ActionResult<List<Category>>> Post([FromBody] Category model, [FromServices] DataContext context) //Usando o DataContext
     {
@@ -57,7 +51,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut]
-    [Route("{ind:int}")]  //chega no metodo
+    [Route("{ind:int}")]
     [Authorize(Roles = "employee")]
     public async Task<ActionResult<List<Category>>> Put(int id, [FromBody] Category model, [FromServices] DataContext context)
     {

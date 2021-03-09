@@ -42,7 +42,7 @@ namespace Shop.Controllers
             .Include(x => x.Category)
             .AsNoTracking()
             .Where(x => x.Category.Id == id)
-            .ToListAsync(); //ToList sempre no final
+            .ToListAsync();
             return products;
         }
 

@@ -27,17 +27,15 @@ namespace Shop
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            //Comprimir
             services.AddResponseCompression(options =>
             {
                 options.Providers.Add<GzipCompressionProvider>();
                 options.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/json" });
             });
-            //Retorna Cache em Headers do Postman
-            //services.AddResponseCaching();
+
             services.AddControllers();
 
-            //gera um chave simetrica, transforma essa chave para um formato de bats
+
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
             services.AddAuthentication(x =>
            {
@@ -57,14 +55,11 @@ namespace Shop
                 };
             });
 
-            //Tudo pronto para os Controllers funcionarem
-            services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database")); //tipo de banco , informando a aplicao que temos DbContext
-            //services.AddDbContext<DataContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("connectionString")));
-            //services.AddScoped<DataContext, DataContext>(); Removido AddDbContext ja faz essa função
-            // colocando o dataContext disponivel
-            // AddScoped - vai garantir que tenha um DataContext por requisição, nunca vai ter duas requisição aberta
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("Database"));
+
+
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Shop Api", Version = "v1" });

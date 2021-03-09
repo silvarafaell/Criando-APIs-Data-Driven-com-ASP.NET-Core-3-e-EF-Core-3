@@ -11,10 +11,10 @@ namespace Shop.Services
     {
         public static string GenerateToken(User user)
         {
-            //CriandoTokenHandler
+            
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
-            //O que vai ter dentro do Token
+            
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
@@ -22,7 +22,7 @@ namespace Shop.Services
                     new Claim(ClaimTypes.Name, user.Username.ToString()),
                     new Claim(ClaimTypes.Role, user.Role.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(2), //Token Valido por duas horas
+                Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
